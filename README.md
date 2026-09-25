@@ -1,7 +1,7 @@
 # homebrew-tools
 
 Homebrew tap for MDS-BD internal tools. Casks are published automatically by each project's GoReleaser release:
-do not edit them by hand.
+do not edit them by hand. To publish a new tool, see [PUBLISHING.md](PUBLISHING.md).
 
 ## Setup
 
