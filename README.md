@@ -17,9 +17,9 @@ brew tap MDS-BD/tools git@github.com:MDS-BD/homebrew-tools.git
 
 | Cask | Description |
 | ---- | ----------- |
-| [`opensearch-proxy`](https://github.com/MDS-BD/opensearch-proxy) | SSM-tunnelled, SigV4-signing proxy to a private AWS OpenSearch domain |
+| [`aws-tunnel`](https://github.com/MDS-BD/aws-tunnel) | SSM tunnels to private AWS services (OpenSearch, ...) without bastions or plugins |
 
 ```sh
-brew install --cask opensearch-proxy
-brew upgrade --cask opensearch-proxy
+brew install --cask aws-tunnel
+brew upgrade --cask aws-tunnel
 ```
