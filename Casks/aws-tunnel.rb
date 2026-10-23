@@ -38,24 +38,24 @@ cask "aws-tunnel" do
 
   on_macos do
     on_arm do
-      sha256 "daeb87aed154605efbafc79026bc14ce70db964898a808a444f489539a9454d1"
+      sha256 "fc82b36d9873a048e655296e6563dde414e6f68f30cf95b453bd974fb4a6bf86"
       url "https://github.com/MDS-BD/aws-tunnel/releases/download/v#{version}/aws-tunnel_#{version}_darwin_arm64.tar.gz",
         using: GitHubPrivateRepositoryReleaseDownloadStrategy
     end
     on_intel do
-      sha256 "a903a69f50f19722e4b499705cf59afb50c40d46b2ebe34d064cc849afc28631"
+      sha256 "182269f8b9180fbb79c56413b7a9c29ddbd45661951115485a6ee79f9fa61f0f"
       url "https://github.com/MDS-BD/aws-tunnel/releases/download/v#{version}/aws-tunnel_#{version}_darwin_amd64.tar.gz",
         using: GitHubPrivateRepositoryReleaseDownloadStrategy
     end
   end
   on_linux do
     on_arm do
-      sha256 "199a135360a1b0a5a8b42ddc67d8c474842803df8332f604491c731be0a757cd"
+      sha256 "4851501b78bc9ecb0ce15c6ab795e1e583704a84c65bada0804586627b1a5b9a"
       url "https://github.com/MDS-BD/aws-tunnel/releases/download/v#{version}/aws-tunnel_#{version}_linux_arm64.tar.gz",
         using: GitHubPrivateRepositoryReleaseDownloadStrategy
     end
     on_intel do
-      sha256 "4076447c24591a599b2656f18c5d31f919c4c8c940bee5c7a315aa634220c49d"
+      sha256 "7514bff56b38b88cb33b915a9d166fafc421ec974f48e020f07f32b698b48766"
       url "https://github.com/MDS-BD/aws-tunnel/releases/download/v#{version}/aws-tunnel_#{version}_linux_amd64.tar.gz",
         using: GitHubPrivateRepositoryReleaseDownloadStrategy
     end
