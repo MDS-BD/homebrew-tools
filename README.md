@@ -20,13 +20,12 @@ classic token with the `repo` scope.
 
 | Cask | Description |
 | ---- | ----------- |
-| [`aws-tunnel`](https://github.com/MDS-BD/aws-tunnel) | SSM tunnels to private AWS services (OpenSearch, ...) without bastions or plugins — temporarily unavailable until the sanitized `v0.0.4` release republishes its cask |
+| [`aws-tunnel`](https://github.com/MDS-BD/aws-tunnel) | SSM tunnels to private AWS services (OpenSearch, ...) without bastions or plugins |
 
 Install with the full name, `mds-bd/tools/<cask>`, so a public cask with the same name is never picked. Add the tap
 first: without it Homebrew clones this private repo over HTTPS, which fails unless git has GitHub credentials.
 
 ```sh
-# Available again after the v0.0.4 release republishes the cask:
 brew install --cask mds-bd/tools/aws-tunnel
 brew upgrade --cask mds-bd/tools/aws-tunnel
 ```
