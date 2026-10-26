@@ -8,6 +8,14 @@ builds the binaries, publishes a GitHub release, signs and notarizes the macOS b
 `.github/workflows/release.yml`, then change the names as below. The examples here are for Go; GoReleaser also
 builds Rust, Zig, Bun and Deno projects, and prebuilt binaries.
 
+## License and release-archive requirements
+
+The tap's own material is licensed under the root [MIT License](LICENSE). The private-repository release-download strategy copied into generated casks is substantial code based on the GoReleaser example; keep its attribution and full MIT text in [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES) whenever distributing the cask. This notice is scoped to that strategy, not all GoReleaser-generated output. Preserve it when refreshing or regenerating the cask.
+
+Application archives are separate distributions maintained by each tool repository. Every release archive for every supported OS/architecture must contain the tool's `LICENSE`, a `LICENSES/` bundle with applicable third-party license texts and notices (including nested dependency licenses), and a versioned inventory/provenance record identifying the app and dependency versions and the origin/version of each notice. Include complete applicable source and license for any third-party source snapshot distributed with the app. Do not substitute an SPDX-only list for the required license texts. The Go toolchain license must match the compiler used, and the archive must include the runtime vendor notices actually shipped with the binary. The tap does not bundle or replace those application notices.
+
+For audited Go applications, pin `actions/setup-go`'s `go-version` to the audited compiler version (the workflow example below uses `1.27.3`; use the audited version for each app rather than a moving `go.mod` selector). `GOTOOLCHAIN: local` in the GoReleaser step prevents automatic toolchain downloads; the GoReleaser build must use that installed compiler. Make dependency resolution read-only (`-mod=readonly`) and do not run `go mod tidy` during release; ensure release builds use the committed dependency versions. Update the included Go license and compiler provenance together whenever the compiler is intentionally upgraded. For each app archive, inspect its packaged notices and run a release snapshot/package inspection across every configured OS/architecture before tagging; confirm the binary's compiler version matches the included Go license version.
+
 ## What is already in place
 
 These secrets are set at **organization level**, so any MDS-BD repository can use them in GitHub Actions without
@@ -51,7 +59,7 @@ jobs:
 
       - uses: actions/setup-go@v7
         with:
-          go-version-file: go.mod
+          go-version: "1.27.3"
 
       # Short-lived token from the org GitHub App, allowed to push the cask to the tap repo only.
       - uses: actions/create-github-app-token@v3
@@ -71,6 +79,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HOMEBREW_TAP_GITHUB_TOKEN: ${{ steps.tap-token.outputs.token }}
+          GOTOOLCHAIN: local
           MACOS_NOTARY_ISSUER_ID: ${{ secrets.MACOS_NOTARY_ISSUER_ID }}
           MACOS_NOTARY_KEY: ${{ secrets.MACOS_NOTARY_KEY }}
           MACOS_NOTARY_KEY_ID: ${{ secrets.MACOS_NOTARY_KEY_ID }}
@@ -85,6 +94,8 @@ every `aws-tunnel` with your tool's name. The parts that matter for this tap:
 
 - **`builds`**: `goos: [darwin, linux]`, `goarch: [amd64, arm64]`, `CGO_ENABLED=0` so the binaries run anywhere.
   Keep the build `id`: `notarize.macos.ids` refers to it.
+
+For Go applications, use GoReleaser's `tool: go` build setting, which selects the `go` executable installed by `actions/setup-go` (pinned to `1.27.3` in this audited example). Set `GOTOOLCHAIN: local` in the GoReleaser step to prevent an automatic toolchain download, and verify the effective compiler with `go version` in CI. Configure GoReleaser build flags to include `-mod=readonly` and retain required environment such as `CGO_ENABLED=0`; do not run `go mod tidy` during release, so builds use committed dependency versions.
 - **`notarize.macos`**: signs and notarizes the darwin binaries with the org Apple credentials, from the Linux
   runner. Keep it: unsigned binaries are blocked by Gatekeeper.
 - **`release.github`**: `owner: MDS-BD`, `name: <your repo>`.
