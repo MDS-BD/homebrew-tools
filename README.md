@@ -5,33 +5,30 @@ do not edit them by hand. To publish a new tool, see [PUBLISHING.md](PUBLISHING.
 
 ## Licensing
 
-This tap's own material is licensed under the MIT License in [LICENSE](LICENSE). The copied GoReleaser private-release download strategy in the generated cask has its scoped attribution and MIT notice in [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES). Application binaries are downloaded from separate project releases; each application project must include its own complete third-party license and notice bundle in every release archive. See [PUBLISHING.md](PUBLISHING.md#rerunning-the-license-audit) for the canonical audit rerun and [PUBLISHING.md](PUBLISHING.md#license-and-release-archive-requirements) for release requirements.
+This tap's own material is licensed under the MIT License in [LICENSE](LICENSE). Each application project must include its own complete third-party license and notice bundle in every release archive. See [PUBLISHING.md](PUBLISHING.md#rerunning-the-license-audit) for the canonical audit rerun and [PUBLISHING.md](PUBLISHING.md#license-and-release-archive-requirements) for release requirements.
 
 ## Setup
 
-This repository and the release assets are private, so Homebrew needs a GitHub token able to read them. If you use
-the GitHub CLI, its token works:
+Both this tap and the tools' GitHub release assets are public, so Homebrew can install them without a GitHub token or git credentials. Add the tap with its public URL:
 
 ```sh
-export HOMEBREW_GITHUB_API_TOKEN=$(gh auth token)   # add it to your shell profile
-brew tap MDS-BD/tools git@github.com:MDS-BD/homebrew-tools.git
+brew tap MDS-BD/tools
 ```
-
-Otherwise create a fine-grained token with *Contents: read* on `MDS-BD/homebrew-tools` and each tool repo, or a
-classic token with the `repo` scope.
 
 ## Tools
 
 | Cask | Description |
 | ---- | ----------- |
 | [`aws-tunnel`](https://github.com/MDS-BD/aws-tunnel) | SSM tunnels to private AWS services (OpenSearch, ...) without bastions or plugins |
+| [`ecr-mirror`](https://github.com/MDS-BD/ecr-mirror) | Mirror container images between ECR registries reachable through different AWS profiles |
 
-Install with the full name, `mds-bd/tools/<cask>`, so a public cask with the same name is never picked. Add the tap
-first: without it Homebrew clones this private repo over HTTPS, which fails unless git has GitHub credentials.
+Install and upgrade with each cask's full name, `mds-bd/tools/<cask>`:
 
 ```sh
 brew install --cask mds-bd/tools/aws-tunnel
 brew upgrade --cask mds-bd/tools/aws-tunnel
+brew install --cask mds-bd/tools/ecr-mirror
+brew upgrade --cask mds-bd/tools/ecr-mirror
 ```
 
 Homebrew 7 prints ``Calling `postflight` is deprecated!`` on install: GoReleaser still generates the old stanza

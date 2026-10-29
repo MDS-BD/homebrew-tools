@@ -10,7 +10,7 @@ builds Rust, Zig, Bun and Deno projects, and prebuilt binaries.
 
 ## License and release-archive requirements
 
-The tap's own material is licensed under the root [MIT License](LICENSE). The private-repository release-download strategy copied into generated casks is substantial code based on the GoReleaser example; keep its attribution and full MIT text in [THIRD_PARTY_NOTICES](THIRD_PARTY_NOTICES) whenever distributing the cask. This notice is scoped to that strategy, not all GoReleaser-generated output. Preserve it when refreshing or regenerating the cask.
+The tap's own material is licensed under the root [MIT License](LICENSE).
 
 Application archives are separate distributions maintained by each tool repository. Every release archive for every supported OS/architecture must contain the tool's `LICENSE`, a `LICENSES/` bundle with applicable third-party license texts and notices (including nested dependency licenses), and a versioned inventory/provenance record identifying the app and dependency versions and the origin/version of each notice. Include complete applicable source and license for any third-party source snapshot distributed with the app. Do not substitute an SPDX-only list for the required license texts. The Go toolchain license must match the compiler used, and the archive must include the runtime vendor notices actually shipped with the binary. The tap does not bundle or replace those application notices.
 
@@ -173,11 +173,8 @@ For Go applications, use GoReleaser's `tool: go` build setting, which selects th
   - `name`, `binaries`, `homepage`, `description` for your tool;
   - `repository: {owner: MDS-BD, name: homebrew-tools, branch: main, token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"}`
     and `directory: Casks`;
-  - `url.template` pointing at **your** repository's releases, with
-    `using: GitHubPrivateRepositoryReleaseDownloadStrategy`;
-  - the `custom_block` defining that download strategy, copied unchanged. Private repositories' release assets are
-    not publicly downloadable: the strategy fetches them through the GitHub API with the user's
-    `HOMEBREW_GITHUB_API_TOKEN`. Public tools can drop both `url.using` and `custom_block`.
+  - `url.template` pointing at your tool repository's public release assets, for example
+    `https://github.com/MDS-BD/<tool>/releases/download/{{ .Tag }}/{{ .ArtifactName }}`. Keep the normal Homebrew downloader: do not set `url.using` or define a `custom_block`. Release assets must be publicly downloadable for anonymous Homebrew installs.
 
 Check it locally before tagging (installs with `go install github.com/goreleaser/goreleaser/v2@latest`):
 
